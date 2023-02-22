@@ -19,21 +19,7 @@ exports.findAllRepairs = CatchAsync( async (req, res, next) => {
 
 exports.findOneRepair = CatchAsync(async (req, res, next) => {
   
-  const { id } = req.params;
-
-  const repair = await Repair.findOne({
-    where: {
-      status: 'pending',
-      id,
-    },
-  });
-
-  if (!repair) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'Repair not found',
-    });
-  }
+  const {repair} = req;
 
   return res.status(200).json({
     status: 'success',
@@ -45,9 +31,9 @@ exports.findOneRepair = CatchAsync(async (req, res, next) => {
 
 exports.createRepair = CatchAsync(async (req, res, next) => {
   
-  const { date, userId } = req.body;
+  const { date, userId, description, motorsNumber } = req.body;
 
-  const repair = await Repair.create({ date, userId });
+  const repair = await Repair.create({ date, userId, description, motorsNumber });
 
   return res.status(201).json({
     status: 'success',
@@ -58,22 +44,10 @@ exports.createRepair = CatchAsync(async (req, res, next) => {
 });
 exports.updateRepair = CatchAsync(async (req, res, next) => {
 
-  const { id } = req.params;
+  
   const { status } = req.body;
+  const {repair} = req;
 
-  const repair = await Repair.findOne({
-    where: {
-      status: 'pending',
-      id,
-    },
-  });
-
-  if (!repair) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'Repair not found',
-    });
-  }
 
   await repair.update({ status });
 
@@ -85,21 +59,7 @@ exports.updateRepair = CatchAsync(async (req, res, next) => {
 
 exports.deleteRepair = CatchAsync(async (req, res, next) => {
   
-  const { id } = req.params;
-
-  const repair = await Repair.findOne({
-    where: {
-      status: 'pending',
-      id,
-    },
-  });
-
-  if (!repair) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'Repair not found',
-    });
-  }
+  const {repair} = req;
 
   await repair.update({ status: 'cancelled' });
 

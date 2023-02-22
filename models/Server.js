@@ -5,6 +5,7 @@ const { userRouter } = require('../routes/user.routes');
 const { repairRouter } = require('../routes/repair.routes');
 const AppError = require('../utils/AppError');
 const globalErrorHandler = require('../controllers/error.controller');
+const initModel = require('./initModels');
 
 class Server {
   constructor() {
@@ -48,6 +49,8 @@ class Server {
       .catch(err => console.log(err));
 
     //relations
+
+    initModel()
 
     db.sync()
       .then(() => console.log('Database synced 😁'))

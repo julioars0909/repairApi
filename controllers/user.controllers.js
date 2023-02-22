@@ -21,20 +21,8 @@ exports.findAllUsers = CatchAsync(async(req, res, next) => {
 
 exports.findOneUser = CatchAsync(async(req, res, next) => {
   
-
-  const {id} = req.params;
-  
-  const findUser = await User.findOne({
-    where: {
-      id,
-      status: 'available'
-    }
-  });
-
-  if(!findUser){
-    return next(new AppError('user not found',404))
-  };
-  
+const {findUser} = req;
+ 
     return  res.status(200).json({
         status: 'success',
         message: 'The user was found successfully',
@@ -64,19 +52,9 @@ exports.createUser = CatchAsync(async(req, res, next) => {
 
 exports.updateUser = CatchAsync(async(req, res, next) => {
   
-  const {id} = req.params;
+  const {findUser} = req;
   const {name, password} = req.body;
 
-
-const findUser = await User.findOne({
-where: {
-  id,
-  status: 'available',
-}
-});
-
-if(!findUser){
-return next(new AppError('user not found',404))} 
 
 await findUser.update({name, password})
 
@@ -91,17 +69,7 @@ return  res.status(200).json({
 
 exports.deleteUser = CatchAsync(async(req, res, next) => {
 
-  const {id} = req.params;
-  
-  const findUser = await User.findOne({
-    where: {
-      id,
-      status: 'available',
-    }
-  });
-  
-  if(!findUser){
-    return next(new AppError('user not found',404))}; 
+  const {findUser} = req;
   
     await findUser.update({status: 'disabled'})
   
