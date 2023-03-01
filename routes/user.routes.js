@@ -6,7 +6,7 @@ const {
   updateUser,
   deleteUser,
 } = require('../controllers/user.controllers');
-const { protect } = require('../middlewares/Auth.middleware');
+const { protect, protectAccountOwner } = require('../middlewares/Auth.middleware');
 const { validateExistUser } = require('../middlewares/user.middleware');
 
 
@@ -18,9 +18,9 @@ router.get('/:id',protect, validateExistUser, findOneUser);
 
 
 //cambiar el protect en caso de errores
-router.patch('/:id',protect, validateExistUser,  updateUser);
+router.patch('/:id',protect, validateExistUser,protectAccountOwner,  updateUser);
 
-router.delete('/:id',protect, validateExistUser, deleteUser);
+router.delete('/:id',protect, validateExistUser,protectAccountOwner, deleteUser);
 
 module.exports = {
   userRouter: router,

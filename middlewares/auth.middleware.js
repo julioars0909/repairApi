@@ -30,7 +30,22 @@ exports.protect = CatchAsync(async(req, res, next) => {
     return next(new AppError('The owner of this token is not longer available', 401))
   }
 
+  req.sessionUser = user;
+
+  
+
   //4. verificar si el usuario Ha cambiado la contrasenia despues de que el token haya expirado
 
 next();
 });
+
+exports.protectAccountOwner = CatchAsync(async (req, res, next) => {
+  const { user, sessionUser } = req;
+
+  if (user.id !== sessionUser.id) {
+    return next(new AppError('You do not own this account.', 401));
+  }
+
+  next();
+});
+
